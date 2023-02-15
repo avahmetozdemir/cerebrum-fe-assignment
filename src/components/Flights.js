@@ -8,6 +8,27 @@ const flights = [
     where: "Los Angeles",
     destinations: "(LAX)",
     knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "NOW BOARDING",
+  },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "GATE CHANGE",
+  },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "WAIT IN LOUNGE",
+  },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
     situation: "GATE CLOSED",
   },
   {
@@ -45,6 +66,27 @@ const flights = [
     knownAs: "AF 8246 / DL 9170 / VS 6842",
     situation: "WAIT IN LOUNGE",
   },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "GATE OPEN",
+  },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "NOW BOARDING",
+  },
+  {
+    when: "13:05",
+    where: "Los Angeles",
+    destinations: "(LAX)",
+    knownAs: "AF 8246 / DL 9170 / VS 6842",
+    situation: "GATE CHANGE",
+  },
 ];
 
 function Flights() {
@@ -57,6 +99,7 @@ function Flights() {
             <FlightDetails flight={flight} />
           ))}
         </div>
+        <ShowFlightsButton type="later" />
       </div>
     </div>
   );

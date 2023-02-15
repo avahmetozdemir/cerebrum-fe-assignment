@@ -6,7 +6,7 @@ function Navbar() {
     <nav className="flex items-center justify-between px-10 h-[75px] text-md text-sky-800 border-b border-gray-200 mb-4">
       {/* left */}
       <div>
-        <h1 className="text-3xl font-bold cursor-pointer">Shiphol</h1>
+        <h1 className="text-3xl font-bold cursor-pointer">Esenboğa</h1>
       </div>
       {/* center */}
       <div className="flex space-x-3">
