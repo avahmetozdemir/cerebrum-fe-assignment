@@ -1,9 +1,9 @@
-import Flights from "./pages/Flights";
+import FlightsPage from "./pages/FlightsPage";
 
 function App() {
   return (
     <div>
-      <Flights />
+      <FlightsPage />
     </div>
   );
 }

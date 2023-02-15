@@ -3,7 +3,7 @@ import { BsPersonFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-10 h-[75px] text-md text-sky-800">
+    <nav className="flex items-center justify-between px-10 h-[75px] text-md text-sky-800 border-b border-gray-200 mb-4">
       {/* left */}
       <div>
         <h1 className="text-3xl font-bold cursor-pointer">Shiphol</h1>
