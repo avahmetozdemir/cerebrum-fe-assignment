@@ -2,7 +2,7 @@ import React from "react";
 import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
 
-function FilterFlights() {
+function FilterFlights({ pageType }) {
   return (
     <div className="flex items-center justify-center mb-6">
       <div className="w-[900px]">
@@ -10,7 +10,7 @@ function FilterFlights() {
           <div className="flex flex-col -space-y-4 font-bold text-[50px] ">
             <h1>Find a</h1>
             {/* TODO- departing will be change according to choose of client with arriving */}
-            <h1>departing</h1>
+            <h1>{pageType}</h1>
             <h1>flight</h1>
           </div>
           <img src={flight} alt="" className="w-[400px] h-[250px]" />

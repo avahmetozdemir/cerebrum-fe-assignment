@@ -5,11 +5,11 @@ import Flights from "../components/Flights";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-function FlightsPage() {
+function DeparturesPage() {
   return (
     <div className="">
       <Navbar />
-      <FilterFlights />
+      <FilterFlights pageType="departing" />
       <FlightType />
       <Flights />
       <Footer />
@@ -17,4 +17,4 @@ function FlightsPage() {
   );
 }
 
-export default FlightsPage;
+export default DeparturesPage;
