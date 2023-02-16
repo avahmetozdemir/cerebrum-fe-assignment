@@ -2,7 +2,7 @@ import React from "react";
 import { HiArrowSmRight } from "react-icons/hi";
 function FlightDetails({ flight }) {
   const { when, where, destinations, knownAs, situation } = flight;
-
+  console.log(flight);
   let situationColor;
   if (situation === "GATE CHANGE" || situation === "DELAYED") {
     situationColor = "bg-red-500";
