@@ -1,8 +1,23 @@
+import DeparturesPage from "./pages/DeparturesPage";
+import ArrivalsPage from "./pages/ArrivalsPage";
+import {
+  BrowserRouter,
+  redirect,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import NotFoundPage from "./pages/NotFoundPage";
 function App() {
   return (
-    <div className="">
-      <h1>Cerebrum Front End Assignment</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/departures" element={<DeparturesPage />} />
+        <Route path="/arrivals" element={<ArrivalsPage />} />
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
