@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
 import axios from "axios";
 
 function FilterFlights({ pageType }) {
   const [dateValue, setDateValue] = useState("");
+  const IATACode = useRef(null);
 
-  console.log(typeof dateValue);
+  function IATACodeHandler() {
+    fetchByIATACode();
+  }
+
   function getNewDateForValue(number, type) {
     let now = new Date();
     if (type === "increase") {
@@ -54,6 +58,16 @@ function FilterFlights({ pageType }) {
       config
     );
     const data = response.data;
+    console.log(data.flights);
+  };
+
+  const fetchByIATACode = async () => {
+    const response = await axios.get(
+      `https://localhost:5000/public-flights/flights?scheduleDate=2023-02-19&route=${IATACode}&includedelays=false&page=0&sort=%2BscheduleTime
+    `,
+      config
+    );
+    const data = await response.data;
     console.log(data.flights);
   };
 
@@ -159,12 +173,14 @@ function FilterFlights({ pageType }) {
           <div className="flex w-[300px] justify-between border border- p-2">
             <input
               type="text"
-              name=""
-              id=""
+              ref={IATACode}
               className="outline-none"
-              placeholder="Enter destination,flight number or airline"
+              placeholder="Enter destination IATA code like "
             />
-            <div className="flex items-center cursor-pointer">
+            <div
+              onClick={IATACodeHandler}
+              className="flex items-center cursor-pointer"
+            >
               <ImSearch size={20} color="#0891B2" />
             </div>
           </div>
