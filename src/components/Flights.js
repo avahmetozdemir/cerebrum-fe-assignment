@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import FlightDetails from "./FlightDetails";
 import ShowFlightsButton from "./ShowFlightsButton";
 
-function Flights() {
-  const [flights, setFlights] = useState([]);
+function Flights({ flights }) {
   const config = {
     headers: {
       Accept: "application/json",
@@ -20,7 +19,6 @@ function Flights() {
       config
     );
     const data = await response.data;
-    setFlights(data.flights);
   };
 
   useEffect(() => {

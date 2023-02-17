@@ -30,11 +30,30 @@ export const fetchTodayArrival = createAsyncThunk(
   }
 );
 
+// Fetch Default Today Arrival Flights
+export const fetchTodayDeparture = createAsyncThunk(
+  "flights/todayDeparture",
+  async () => {
+    const {
+      data: { flights },
+    } = await axios.get(
+      "http://localhost:5000/public-flights/flights?flightDirection=D&includedelays=false&page=1&sort=%2BscheduleTime",
+      config
+    );
+
+    return flights;
+  }
+);
+
 const FlightSlice = createSlice({
   name: "Flights",
   initialState,
   extraReducers: (builder) => {
     builder.addCase(fetchTodayArrival.fulfilled, (state, action) => {
+      state.flights = action.payload;
+      state.flightsLoaded = true;
+    });
+    builder.addCase(fetchTodayDeparture.fulfilled, (state, action) => {
       state.flights = action.payload;
       state.flightsLoaded = true;
     });
