@@ -68,29 +68,26 @@ function FlightDetails({ flight }) {
 
   return (
     <div
+      key={id}
       onClick={() => navigateToDetailPage(id)}
       className="w-[900px] h-[150px] min-h-[80px] cursor-pointer bg-white"
     >
       <div className="flex flex-col space-y-4 py-2 px-4">
         <div className="flex justify-between ">
           <div className="flex justify-start ">
-            <h1>{scheduleTime.slice(0, 5)}</h1>
+            <h1>{scheduleTime?.slice(0, 5)}</h1>
           </div>
           <div className="border-dashed border-r-2 h-[75px]"></div>
           <div className="">
             <h1>
-              {where} {route.destinations[0]}
+              {where} {route?.destinations[0]}
             </h1>
           </div>
           <div className="border-dashed border-r-2 h-[80px]"></div>
           <div className="">
-            <div
-              className={`text-[${
-                findState(publicFlightState.flightStates[0]).color
-              }] h-7 `}
-            >
+            <div className={`h-7 `}>
               <h3 className=" text-[12px] font-medium p-1">
-                {findState(publicFlightState.flightStates[0]).state}
+                {findState(publicFlightState?.flightStates[0])?.state}
               </h3>
             </div>
           </div>

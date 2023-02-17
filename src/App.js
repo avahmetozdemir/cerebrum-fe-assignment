@@ -4,11 +4,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ArrivalsFlightDetailPage from "./pages/ArrivalsFlightDetailPage";
 import DeparturesFlightDetailPage from "./pages/DeparturesFlightDetailPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/departures" element={<DeparturesPage />} />
         <Route path="/arrivals" element={<ArrivalsPage />} />
         <Route

@@ -2,10 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { fetchByDate } from "../redux/features/FlightsSlice";
 
 function FilterFlights({ pageType }) {
-  const [dateValue, setDateValue] = useState("");
   const IATACode = useRef(null);
+
+  const dispatch = useDispatch();
 
   function IATACodeHandler() {
     fetchByIATACode();
@@ -51,15 +54,13 @@ function FilterFlights({ pageType }) {
     },
   };
 
-  const fetchByDate = async () => {
-    const response = await axios.get(
-      `http://localhost:5000/public-flights/flights?scheduleDate=${dateValue}&includedelays=false&page=0&sort=%2BscheduleTime
-    `,
-      config
-    );
-    const data = response.data;
-    console.log(data.flights);
-  };
+  function fetchFlightsByDate(e) {
+    if (pageType === "arriving") {
+      dispatch(fetchByDate(e.target.value, "A"));
+    } else if (pageType === "departing") {
+      dispatch(fetchByDate(e.target.value, "D"));
+    }
+  }
 
   const fetchByIATACode = async () => {
     const response = await axios.get(
@@ -70,10 +71,6 @@ function FilterFlights({ pageType }) {
     const data = await response.data;
     console.log(data.flights);
   };
-
-  useEffect(() => {
-    fetchByDate();
-  }, [dateValue]);
 
   return (
     <div className="flex items-center justify-center mb-6">
@@ -91,7 +88,7 @@ function FilterFlights({ pageType }) {
           <select
             name="day"
             id=""
-            onChange={(e) => setDateValue(e.target.value)}
+            onChange={(e) => fetchFlightsByDate(e)}
             className="bg-white border border-gray-300 py-2 px-4 outline-none"
           >
             <option value={`${getNewDateForValue(1, "decrease")}`}>

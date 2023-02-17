@@ -5,13 +5,13 @@ import Flights from "../components/Flights";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodayDeparture } from "../redux/features/FlightsSlice";
+import { fetchDepartures } from "../redux/features/FlightsSlice";
 
 function DeparturesPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTodayDeparture());
+    dispatch(fetchDepartures(1));
   }, [dispatch]);
 
   const flights = useSelector((state) => state.flights.flights);

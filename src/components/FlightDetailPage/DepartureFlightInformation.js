@@ -2,7 +2,9 @@ import React from "react";
 import { BiRun } from "react-icons/bi";
 import { BsArrowRightShort } from "react-icons/bs";
 
-function FlightInformation() {
+function DepartureFlightInformation({ flight }) {
+  console.log(flight);
+  const { scheduleTime, route, codeshares, publicFlightState, id } = flight;
   return (
     <div className="flex justify-center">
       <div className="w-[800px] mt-4">
@@ -56,4 +58,4 @@ function FlightInformation() {
   );
 }
 
-export default FlightInformation;
+export default DepartureFlightInformation;
