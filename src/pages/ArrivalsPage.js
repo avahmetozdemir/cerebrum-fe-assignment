@@ -7,13 +7,13 @@ import Footer from "../components/Footer";
 
 function ArrivalsPage() {
   return (
-    <div className="">
+    <>
       <Navbar />
       <FilterFlights pageType="arriving" />
       <FlightType />
       <Flights />
       <Footer />
-    </div>
+    </>
   );
 }
 

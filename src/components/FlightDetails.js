@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { HiArrowSmRight } from "react-icons/hi";
+import { useLocation, useNavigate } from "react-router-dom";
 function FlightDetails({ flight }) {
-  const { scheduleTime, route, codeshares, publicFlightState } = flight;
+  const { scheduleTime, route, codeshares, publicFlightState, id } = flight;
   const [where, setWhere] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const flightStates = {
     SCH: { state: "Flight scheduled", color: "#E2CE49" },
@@ -55,8 +58,19 @@ function FlightDetails({ flight }) {
     fetchDestination();
   }, []);
 
+  function navigateToDetailPage() {
+    if (location.pathname === "/arrivals") {
+      navigate(`/arrivals/${id}`);
+    } else if (location.pathname === "/departures") {
+      navigate(`/departures/${id}`);
+    }
+  }
+
   return (
-    <div className="w-[900px] h-[150px] min-h-[80px] cursor-pointer bg-white">
+    <div
+      onClick={() => navigateToDetailPage(id)}
+      className="w-[900px] h-[150px] min-h-[80px] cursor-pointer bg-white"
+    >
       <div className="flex flex-col space-y-4 py-2 px-4">
         <div className="flex justify-between ">
           <div className="flex justify-start ">
