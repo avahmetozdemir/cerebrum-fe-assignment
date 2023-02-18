@@ -1,16 +1,22 @@
 import React from "react";
 import { BsPersonFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
+import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <nav className="flex bg-white items-center justify-between px-10 h-[75px] text-md text-sky-800 border-b border-gray-200 mb-4">
       {/* left */}
       <div>
-        <h1 className="text-3xl font-bold cursor-pointer">Esenboğa</h1>
+        <Link to="/">
+          <h1 className="text-3xl font-bold cursor-pointer">Esenboğa</h1>
+        </Link>
       </div>
       {/* center */}
       <div className="flex space-x-5">
-        <h3 className="cursor-pointer">Flights</h3>
+        <Link to="/departures">
+          {" "}
+          <h3 className="cursor-pointer">Flights</h3>
+        </Link>
         <h3 className="cursor-pointer">Parking & Transport</h3>
         <h3 className="cursor-pointer">Shop,Taste & Discover</h3>
         <h3 className="cursor-pointer">Services</h3>

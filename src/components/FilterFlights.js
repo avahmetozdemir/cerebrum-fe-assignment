@@ -1,15 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { fetchByDate, fetchByIATACode } from "../redux/features/FlightsSlice";
+import { useLocation } from "react-router-dom";
 
 function FilterFlights({ pageType }) {
-  const [dateValue, setDateValue] = useState("");
-  const IATACode = useRef(null);
+  const [IATACode, setIATACode] = useState("");
+  const [dateFilterTime, setDateFilterTime] = useState("");
+  const location = useLocation();
+  const type = location.pathname.split("/")[1];
 
-  function IATACodeHandler() {
-    fetchByIATACode();
-  }
+  const dispatch = useDispatch();
 
   function getNewDateForValue(number, type) {
     let now = new Date();
@@ -42,38 +44,38 @@ function FilterFlights({ pageType }) {
     now.setDate(now.getDate() + number);
     return `${now.getDate()} ${monthNames[now.getMonth()]}`;
   }
-  const config = {
-    headers: {
-      Accept: "application/json",
-      app_id: "47351075",
-      app_key: "ac353dccbad2d1bd8549dc774c6c04bc",
-      ResourceVersion: "v4",
-    },
-  };
 
-  const fetchByDate = async () => {
-    const response = await axios.get(
-      `http://localhost:5000/public-flights/flights?scheduleDate=${dateValue}&includedelays=false&page=0&sort=%2BscheduleTime
-    `,
-      config
-    );
-    const data = response.data;
-    console.log(data.flights);
-  };
+  function sendParamsToFetchFilteredData() {
+    if (type === "arrivals") {
+      dispatch(
+        fetchByIATACode({
+          dateValue: dateFilterTime,
+          IATACode: IATACode,
+          type: "A",
+        })
+      );
+    } else if (type === "departures") {
+      dispatch(
+        fetchByIATACode({
+          dateValue: dateFilterTime,
+          IATACode: IATACode,
+          type: "D",
+        })
+      );
+    }
+  }
 
-  const fetchByIATACode = async () => {
-    const response = await axios.get(
-      `https://localhost:5000/public-flights/flights?scheduleDate=2023-02-19&route=${IATACode}&includedelays=false&page=0&sort=%2BscheduleTime
-    `,
-      config
-    );
-    const data = await response.data;
-    console.log(data.flights);
-  };
+  function fetchFlightsByDate(e) {
+    setDateFilterTime(e.target.value);
 
-  useEffect(() => {
-    fetchByDate();
-  }, [dateValue]);
+    if (IATACode === "") {
+      if (type === "arrivals") {
+        dispatch(fetchByDate({ dateValue: e.target.value, type: "A" }));
+      } else if (type === "departures") {
+        dispatch(fetchByDate({ dateValue: e.target.value, type: "D" }));
+      }
+    }
+  }
 
   return (
     <div className="flex items-center justify-center mb-6">
@@ -91,7 +93,7 @@ function FilterFlights({ pageType }) {
           <select
             name="day"
             id=""
-            onChange={(e) => setDateValue(e.target.value)}
+            onChange={(e) => fetchFlightsByDate(e)}
             className="bg-white border border-gray-300 py-2 px-4 outline-none"
           >
             <option value={`${getNewDateForValue(1, "decrease")}`}>
@@ -170,15 +172,16 @@ function FilterFlights({ pageType }) {
               {getNewDateForName(23)}
             </option>
           </select>
-          <div className="flex w-[300px] justify-between border border- p-2">
+          <div className="flex w-[320px] justify-between border border- p-2">
             <input
               type="text"
-              ref={IATACode}
-              className="outline-none"
-              placeholder="Enter destination IATA code like "
+              value={IATACode}
+              onChange={(e) => setIATACode(e.target.value)}
+              className="outline-none w-[275px]"
+              placeholder="Enter destination IATA code like AGP"
             />
             <div
-              onClick={IATACodeHandler}
+              onClick={sendParamsToFetchFilteredData}
               className="flex items-center cursor-pointer"
             >
               <ImSearch size={20} color="#0891B2" />
