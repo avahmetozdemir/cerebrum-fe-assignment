@@ -66,6 +66,27 @@ function FlightDetails({ flight }) {
     }
   }
 
+  const state = findState(publicFlightState?.flightStates[0])?.state;
+  let colorStyle;
+  if (
+    state === "Arrived Flight has been completely handled" ||
+    state === "Diverted" ||
+    state === "Canceled" ||
+    state === "Delayed"
+  ) {
+    colorStyle = "bg-[#DA2626]";
+  } else if (
+    state === "Flight scheduled" ||
+    state === "Airbone" ||
+    state === "Flight in Dutch airspace" ||
+    state === "FIBAG" ||
+    state === "Wait in Lounge"
+  ) {
+    colorStyle = "bg-[#E2CE49]";
+  } else {
+    colorStyle = "bg-[#627A9E]";
+  }
+
   return (
     <div
       key={id}
@@ -85,7 +106,7 @@ function FlightDetails({ flight }) {
           </div>
           <div className="border-dashed border-r-2 h-[80px]"></div>
           <div className="">
-            <div className={`h-7 `}>
+            <div className={`${colorStyle} h-7 rounded-md `}>
               <h3 className=" text-[12px] font-medium p-1">
                 {findState(publicFlightState?.flightStates[0])?.state}
               </h3>

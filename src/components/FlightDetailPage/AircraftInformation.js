@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAircraftType } from "../../redux/features/FlightsSlice";
 
 function AircraftInformation({ aircraft }) {
-  const codeshares = aircraft?.codeshares?.codeshares;
-  const iataMain = aircraft?.aircraftType.iataMain;
-  const iataSub = aircraft?.aircraftType.iataSub;
+  // const codeshares = aircraft?.codeshares?.codeshares;
+  // const iataMain = aircraft?.aircraftType.iataMain;
+  // const iataSub = aircraft?.aircraftType.iataSub;
   const [aircraftType, setAircraftType] = useState([]);
   const config = {
     headers: {
@@ -28,9 +28,9 @@ function AircraftInformation({ aircraft }) {
     setAircraftType(data);
   };
 
-  useEffect(() => {
-    fetchAircraftType(iataMain, iataSub);
-  }, []);
+  // useEffect(() => {
+  //   fetchAircraftType(iataMain, iataSub);
+  // }, []);
 
   //TODO get aircraft data and show its type!!!!
 
@@ -51,9 +51,9 @@ function AircraftInformation({ aircraft }) {
             <div className="flex flex-col py-2">
               <h4 className="text-gray-300">This flight is also known as:</h4>
               <div className="flex space-x-2">
-                {codeshares?.map((code, index) => (
+                {/* {codeshares?.map((code, index) => (
                   <p key={index}>{code}</p>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
