@@ -4,9 +4,12 @@ import { ImSearch } from "react-icons/im";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { fetchByDate } from "../redux/features/FlightsSlice";
+import { useLocation } from "react-router-dom";
 
 function FilterFlights({ pageType }) {
   const IATACode = useRef(null);
+  const location = useLocation();
+  const type = location.pathname.split("/")[1];
 
   const dispatch = useDispatch();
 
@@ -55,10 +58,11 @@ function FilterFlights({ pageType }) {
   };
 
   function fetchFlightsByDate(e) {
-    if (pageType === "arriving") {
-      dispatch(fetchByDate(e.target.value, "A"));
-    } else if (pageType === "departing") {
-      dispatch(fetchByDate(e.target.value, "D"));
+    if (type === "arrivals") {
+      console.log("arrival girdi");
+      dispatch(fetchByDate({ dateValue: e.target.value, type: "A" }));
+    } else if (type === "departures") {
+      dispatch(fetchByDate({ dateValue: e.target.value, type: "D" }));
     }
   }
 

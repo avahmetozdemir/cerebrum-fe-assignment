@@ -71,18 +71,34 @@ export const fetchEarlierArrivalFlights = createAsyncThunk(
 );
 
 //fetch flights with date to filter by client
+//TODO try with IATA code and give if statements
 export const fetchByDate = createAsyncThunk(
   "flights/filterByDate",
-  async (dateValue) => {
-    console.log(dateValue);
+  async ({ dateValue, type }) => {
+    console.log(dateValue, type);
     const {
       data: { flights },
     } = await axios.get(
-      `http://localhost:5000/public-flights/flights?scheduleDate=${dateValue}&includedelays=false&page=0&sort=%2BscheduleTime
+      `http://localhost:5000/public-flights/flights?scheduleDate=${dateValue}&flightDirection=${type}&includedelays=false&page=0&sort=%2BscheduleTime
   `,
       config
     );
-    console.log(flights);
+    return flights;
+  }
+);
+
+//fetch flights by IATA code
+
+export const fetchByIATACode = createAsyncThunk(
+  "flights/filterByIATACode",
+  async (IATACode, type) => {
+    const {
+      data: { flights },
+    } = await axios.get(
+      `https://localhost:5000/public-flights/flights?scheduleDate=2023-02-19&route=${IATACode}&flightDirection=${type}&includedelays=false&page=0&sort=%2BscheduleTime
+    `,
+      config
+    );
     return flights;
   }
 );
@@ -102,6 +118,9 @@ const FlightSlice = createSlice({
       state.flight = action.payload;
     });
     builder.addCase(fetchByDate.fulfilled, (state, action) => {
+      state.flights = action.payload;
+    });
+    builder.addCase(fetchByIATACode.fulfilled, (state, action) => {
       state.flights = action.payload;
     });
   },
