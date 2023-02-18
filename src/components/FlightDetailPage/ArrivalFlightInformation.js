@@ -1,9 +1,9 @@
 import React from "react";
 import { BiRun } from "react-icons/bi";
 import { BsArrowRightShort } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 
 function ArrivalFlightInformation({ flight }) {
-  console.log(flight);
   const flightStates = {
     SCH: { state: "Flight scheduled", color: "#E2CE49" },
     AIR: { state: "Airbone", color: "#E2CE49" },
@@ -36,10 +36,9 @@ function ArrivalFlightInformation({ flight }) {
       return null;
     }
   }
-  const publicFlightState = flight?.publicFlightState;
+  // const publicFlightState = flight?.publicFlightState;
 
-  let baggageNumber = flight?.baggageClaim.belts[0];
-  console.log(baggageNumber);
+  //let baggageNumber = flight?.baggageClaim.belts[0];
   return (
     <div className="flex justify-center">
       <div className="w-[800px] mt-4">
@@ -61,17 +60,17 @@ function ArrivalFlightInformation({ flight }) {
           </div>
           <div className="flex flex-col">
             <p>Arrivals</p>
-            <p className="font-semibold">{flight?.terminal}</p>
+            <p className="font-semibold">3</p>
           </div>
           <div className="flex flex-col">
             <p>Baggage belt</p>
-            <p className="font-semibold">{baggageNumber}</p>
+            <p className="font-semibold">17</p>
           </div>
           <div className="flex flex-col">
             <p>Gate</p>
             {flight?.gate && (
               <div className="bg-yellow-500 rounded-lg">
-                <p className="font-semibold p-1">{flight?.gate}</p>
+                <p className="font-semibold p-1">B15</p>
               </div>
             )}
           </div>
@@ -80,9 +79,7 @@ function ArrivalFlightInformation({ flight }) {
           <div className="px-4 py-2">
             <div className="flex space-x-4 py-2 border-b border-gray-200">
               <BiRun size={24} color="black" />
-              <h3 className="font-semibold ">
-                {findState(publicFlightState.flightStates[0]).state}
-              </h3>
+              <h3 className="font-semibold ">Departured</h3>
             </div>
             <div className="flex py-2 space-x-1 cursor-pointer">
               <h3 className="text-blue-500 underline">
