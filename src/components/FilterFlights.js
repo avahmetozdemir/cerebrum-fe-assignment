@@ -3,19 +3,17 @@ import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { fetchByDate } from "../redux/features/FlightsSlice";
+import { fetchByDate, fetchByIATACode } from "../redux/features/FlightsSlice";
 import { useLocation } from "react-router-dom";
 
 function FilterFlights({ pageType }) {
-  const IATACode = useRef(null);
+  const IATACodeRef = useRef(null);
+  const [IATACode, setIATACode] = useState("");
+  const [dateFilterTime, setDateFilterTime] = useState("");
   const location = useLocation();
   const type = location.pathname.split("/")[1];
 
   const dispatch = useDispatch();
-
-  function IATACodeHandler() {
-    fetchByIATACode();
-  }
 
   function getNewDateForValue(number, type) {
     let now = new Date();
@@ -48,33 +46,38 @@ function FilterFlights({ pageType }) {
     now.setDate(now.getDate() + number);
     return `${now.getDate()} ${monthNames[now.getMonth()]}`;
   }
-  const config = {
-    headers: {
-      Accept: "application/json",
-      app_id: "47351075",
-      app_key: "ac353dccbad2d1bd8549dc774c6c04bc",
-      ResourceVersion: "v4",
-    },
-  };
 
-  function fetchFlightsByDate(e) {
+  function sendParamsToFetchFilteredData() {
     if (type === "arrivals") {
-      console.log("arrival girdi");
-      dispatch(fetchByDate({ dateValue: e.target.value, type: "A" }));
+      dispatch(
+        fetchByIATACode({
+          dateValue: dateFilterTime,
+          IATACode: IATACode,
+          type: "A",
+        })
+      );
     } else if (type === "departures") {
-      dispatch(fetchByDate({ dateValue: e.target.value, type: "D" }));
+      dispatch(
+        fetchByIATACode({
+          dateValue: dateFilterTime,
+          IATACode: IATACode,
+          type: "D",
+        })
+      );
     }
   }
 
-  const fetchByIATACode = async () => {
-    const response = await axios.get(
-      `https://localhost:5000/public-flights/flights?scheduleDate=2023-02-19&route=${IATACode}&includedelays=false&page=0&sort=%2BscheduleTime
-    `,
-      config
-    );
-    const data = await response.data;
-    console.log(data.flights);
-  };
+  function fetchFlightsByDate(e) {
+    setDateFilterTime(e.target.value);
+
+    if (IATACode === "") {
+      if (type === "arrivals") {
+        dispatch(fetchByDate({ dateValue: e.target.value, type: "A" }));
+      } else if (type === "departures") {
+        dispatch(fetchByDate({ dateValue: e.target.value, type: "D" }));
+      }
+    }
+  }
 
   return (
     <div className="flex items-center justify-center mb-6">
@@ -174,12 +177,13 @@ function FilterFlights({ pageType }) {
           <div className="flex w-[300px] justify-between border border- p-2">
             <input
               type="text"
-              ref={IATACode}
+              value={IATACode}
+              onChange={(e) => setIATACode(e.target.value)}
               className="outline-none"
               placeholder="Enter destination IATA code like "
             />
             <div
-              onClick={IATACodeHandler}
+              onClick={sendParamsToFetchFilteredData}
               className="flex items-center cursor-pointer"
             >
               <ImSearch size={20} color="#0891B2" />

@@ -75,7 +75,7 @@ export const fetchEarlierArrivalFlights = createAsyncThunk(
 export const fetchByDate = createAsyncThunk(
   "flights/filterByDate",
   async ({ dateValue, type }) => {
-    console.log(dateValue, type);
+    console.log("ONLY TIME FILTER", dateValue, type);
     const {
       data: { flights },
     } = await axios.get(
@@ -91,14 +91,16 @@ export const fetchByDate = createAsyncThunk(
 
 export const fetchByIATACode = createAsyncThunk(
   "flights/filterByIATACode",
-  async (IATACode, type) => {
+  async ({ dateValue, IATACode, type }) => {
+    console.log("TIME WITH IATA FILTER", dateValue, IATACode, type);
     const {
       data: { flights },
     } = await axios.get(
-      `https://localhost:5000/public-flights/flights?scheduleDate=2023-02-19&route=${IATACode}&flightDirection=${type}&includedelays=false&page=0&sort=%2BscheduleTime
+      `http://localhost:5000/public-flights/flights?scheduleDate=${dateValue}&flightDirection=${type}&route=${IATACode}&includedelays=false&page=0&sort=%2BscheduleTime
     `,
       config
     );
+    console.log(flights);
     return flights;
   }
 );
