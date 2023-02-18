@@ -92,7 +92,7 @@ export const fetchByDate = createAsyncThunk(
 export const fetchByIATACode = createAsyncThunk(
   "flights/filterByIATACode",
   async ({ dateValue, IATACode, type }) => {
-    console.log("TIME WITH IATA FILTER", dateValue, IATACode, type);
+    console.log("TIME AND IATA FILTER", dateValue, IATACode, type);
     const {
       data: { flights },
     } = await axios.get(

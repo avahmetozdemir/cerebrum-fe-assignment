@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import flight from "../assets/flights.svg";
 import { ImSearch } from "react-icons/im";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { fetchByDate, fetchByIATACode } from "../redux/features/FlightsSlice";
 import { useLocation } from "react-router-dom";
 
 function FilterFlights({ pageType }) {
-  const IATACodeRef = useRef(null);
   const [IATACode, setIATACode] = useState("");
   const [dateFilterTime, setDateFilterTime] = useState("");
   const location = useLocation();
@@ -174,13 +172,13 @@ function FilterFlights({ pageType }) {
               {getNewDateForName(23)}
             </option>
           </select>
-          <div className="flex w-[300px] justify-between border border- p-2">
+          <div className="flex w-[320px] justify-between border border- p-2">
             <input
               type="text"
               value={IATACode}
               onChange={(e) => setIATACode(e.target.value)}
-              className="outline-none"
-              placeholder="Enter destination IATA code like "
+              className="outline-none w-[275px]"
+              placeholder="Enter destination IATA code like AGP"
             />
             <div
               onClick={sendParamsToFetchFilteredData}
