@@ -1,10 +1,8 @@
 import React from "react";
 import { BiRun } from "react-icons/bi";
 import { BsArrowRightShort } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
 
 function ArrivalFlightInformation({ flight, where, airline }) {
-  console.log(flight);
   const flightStates = {
     SCH: { state: "Flight scheduled", color: "#E2CE49" },
     AIR: { state: "Airbone", color: "#E2CE49" },
