@@ -1,13 +1,26 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { HiArrowSmRight } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { fetchAircraftType } from "../redux/features/FlightsSlice";
 function FlightDetails({ flight }) {
-  const { scheduleTime, route, codeshares, publicFlightState, id } = flight;
+  const {
+    scheduleTime,
+    route,
+    codeshares,
+    publicFlightState,
+    id,
+    aircraftType,
+    prefixIATA,
+  } = flight;
   const [where, setWhere] = useState([]);
+  //const [aircraftType,setAircraftType] = useState([])
   const navigate = useNavigate();
   const location = useLocation();
-
+  const dispatch = useDispatch();
+  const iataMain = aircraftType?.iataMain;
+  const iataSub = aircraftType?.iataSub;
   const flightStates = {
     SCH: { state: "Flight scheduled", color: "#E2CE49" },
     AIR: { state: "Airbone", color: "#E2CE49" },
@@ -60,9 +73,23 @@ function FlightDetails({ flight }) {
 
   function navigateToDetailPage() {
     if (location.pathname === "/arrivals") {
-      navigate(`/arrivals/${id}`);
+      navigate(`/arrivals/${id}`, {
+        state: {
+          destination: where,
+          iataMain: iataMain,
+          iataSub: iataSub,
+          prefixIATA: prefixIATA,
+        },
+      });
     } else if (location.pathname === "/departures") {
-      navigate(`/departures/${id}`);
+      navigate(`/departures/${id}`, {
+        state: {
+          destination: where,
+          iataMain: iataMain,
+          iataSub: iataSub,
+          prefixIATA: prefixIATA,
+        },
+      });
     }
   }
 
@@ -89,19 +116,18 @@ function FlightDetails({ flight }) {
 
   return (
     <div
-      key={id}
-      onClick={() => navigateToDetailPage(id)}
-      className="w-[900px] h-[150px] min-h-[80px] cursor-pointer bg-white"
+      onClick={navigateToDetailPage}
+      className="w-[900px] h-[150px] min-h-[80px] cursor-pointer bg-white mb-2"
     >
       <div className="flex flex-col space-y-4 py-2 px-4">
         <div className="flex justify-between ">
           <div className="flex justify-start ">
-            <h1>{scheduleTime?.slice(0, 5)}</h1>
+            <h1 className="font-semibold">{scheduleTime?.slice(0, 5)}</h1>
           </div>
           <div className="border-dashed border-r-2 h-[75px]"></div>
           <div className="">
-            <h1>
-              {where} {route?.destinations[0]}
+            <h1 className="font-semibold">
+              <span>{where}</span> {route?.destinations[0]}
             </h1>
           </div>
           <div className="border-dashed border-r-2 h-[80px]"></div>

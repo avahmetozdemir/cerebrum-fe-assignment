@@ -11,7 +11,7 @@ function ArrivalsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchArrivals(1));
+    dispatch(fetchArrivals());
   }, [dispatch]);
 
   const flights = useSelector((state) => state.flights.flights);

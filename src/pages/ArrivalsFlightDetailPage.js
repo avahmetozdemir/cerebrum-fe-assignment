@@ -10,9 +10,10 @@ import { fetchDetailPageInfo } from "../redux/features/FlightsSlice";
 
 function ArrivalsFlightDetailPage() {
   const location = useLocation();
+  const { state } = useLocation();
   const id = location.pathname.split("/")[2];
   const dispatch = useDispatch();
-  const [flight, setFlight] = useState([]);
+  const [airline, setAirline] = useState("");
 
   const config = {
     headers: {
@@ -22,32 +23,38 @@ function ArrivalsFlightDetailPage() {
       ResourceVersion: "v4",
     },
   };
-  // useEffect(() => {
-  //   dispatch(fetchDetailPageInfo(id));
-  // }, []);
-
-  // const flight = useSelector((state) => state.flights.flight);
-
-  useLayoutEffect(() => {
-    const fetchFlightById = async () => {
-      const response = await axios.get(
-        `http://localhost:5000/public-flights/flights/${id}`,
-        config
-      );
-      const data = await response.data;
-      console.log(data);
-      setFlight(data);
-    };
-    fetchFlightById();
+  useEffect(() => {
+    dispatch(fetchDetailPageInfo(id));
   }, []);
+  const flight = useSelector((state) => state.flights.flight);
 
-  console.log(flight);
+  const fetchAirlinesName = async () => {
+    const { data } = await axios.get(
+      `http://localhost:5000/public-flights/airlines/${state?.prefixIATA}`,
+      config
+    );
+    const name = await data.publicName;
+    setAirline(name);
+  };
+  useEffect(() => {
+    fetchAirlinesName();
+  }, []);
+  const aircraftType = useSelector((state) => state.flights.aircraftType);
+
+  //if (!flight) return null;
   return (
     <>
       <div className="bg-[#dbf0ef] min-h-[800px] ">
         <Navbar />
-        <ArrivalFlightInformation flight={flight} />
-        <AircraftInformation aircraft={flight} />
+        <ArrivalFlightInformation
+          flight={flight}
+          where={state?.destination}
+          airline={airline}
+        />
+        <AircraftInformation
+          aircraft={flight}
+          aircraftType={aircraftType?.[0]?.longDescription}
+        />
       </div>
       <Footer />
     </>
