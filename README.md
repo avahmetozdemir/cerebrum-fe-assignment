@@ -1,71 +1,64 @@
-# Getting Started with Create React App
+# Cerebrum Front End Assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An application that aims to have similiar functionalities with Schiphol Airport web sites arrivals and departures flight information. Used Schiphol public api to fetch flights according to our desires. To get data from this api first we need to create a proxy to handle of their cors policy error. To reach that middleware, you can clone my middleware-for-cors-error repository from my github profile. All you need to do is to start that middleware on http://localhost:5000/.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- First render current flights according to your page; arrival-departure pages
+- Filter flights by two options which are date and IATA code of airport.
+- There is a detail page that show more detail about flight.
 
-### `npm start`
+## Built with
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- HTML
+- Tailwind CSS
+- JavaScript/ES6
+- React Hooks
+- Node.js
+- Express
+- Redux Toolkit
+- axios
+- react-router
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+- Node (v.19.1.0)
+- Npm (v.8.19.3)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Setup
 
-### `npm run build`
+#### Run Backend Application
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- git clone https://github.com/avahmetozdemir/middleware-for-cors-error.git
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Open a Terminal Session
+- cd middleware-for-cors-error
+- npm install
+- node index.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Run Frontend Application
 
-### `npm run eject`
+- git clone https://github.com/avahmetozdemir/cerebrum-fe-assignment.git
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Open a Terminal Session
+- cd cerebrum-fe-assignment
+- npm install
+- npm start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Authors
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+👤 **Ahmet Mert Ozdemir**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [Linkedin](https://www.linkedin.com/in/ahmetmozdemir/)
+- [Email](avamertozdemir@gmail.com)
 
-## Learn More
+## 🤝 Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Contributions, issues and feature requests are welcome!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Feel free to check the [issues page](https://github.com/avahmetozdemir/cerebrum-fe-assignment.git/issues).
 
-### Code Splitting
+## Show your support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# cerebrum-fe-assignment
+Give a ⭐️ if you like this project!
