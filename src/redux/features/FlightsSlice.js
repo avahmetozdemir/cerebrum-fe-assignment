@@ -5,6 +5,10 @@ const initialState = {
   flights: [],
   flightsLoaded: false,
   flight: null,
+  earlierFlights: [],
+  laterFlights: [],
+  aircraftType: [],
+  airlineName: null,
 };
 
 const config = {
@@ -16,14 +20,67 @@ const config = {
   },
 };
 
+//Fetching data from that date time
+function addHours(date, hours) {
+  date.setHours(date.getHours() + hours);
+
+  return date;
+}
+
+const now = new Date();
+
+const makeTwoHoursLater = addHours(now, 2);
+const twoHoursLater = makeTwoHoursLater.toISOString().slice(0, 19);
+
+const makeThreeHoursLater = addHours(now, 3);
+const threeHoursLater = makeThreeHoursLater.toISOString().slice(0, 19);
+
+const makeFourHoursLater = addHours(now, 4);
+const fourHoursLater = makeFourHoursLater.toISOString().slice(0, 19);
+
+const makeFiveHoursLater = addHours(now, 5);
+const fiveHoursLater = makeFiveHoursLater.toISOString().slice(0, 19);
+
 // Fetch Arrival Flights
 export const fetchArrivals = createAsyncThunk(
   "flights/todayArrival",
+  async () => {
+    const {
+      data: { flights },
+    } = await axios.get(
+      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=0&sort=%2BscheduleTime&fromDateTime=${threeHoursLater}&toDateTime=${fourHoursLater}&searchDateTimeField=scheduleDateTime`,
+      config
+    );
+
+    return flights;
+  }
+);
+
+//Fetch Later Arrivals Flights
+
+export const fetchLaterArrivals = createAsyncThunk(
+  "flights/laterArrival",
   async (pageNumber) => {
     const {
       data: { flights },
     } = await axios.get(
-      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime`,
+      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${fourHoursLater}&toDateTime=${fiveHoursLater}&searchDateTimeField=scheduleDateTime`,
+      config
+    );
+
+    return flights;
+  }
+);
+
+//Fetch earlier Arrivals Flights
+
+export const fetchEarlierArrivals = createAsyncThunk(
+  "flights/earlierArrival",
+  async (pageNumber) => {
+    const {
+      data: { flights },
+    } = await axios.get(
+      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${twoHoursLater}&toDateTime=${threeHoursLater}&searchDateTimeField=scheduleDateTime`,
       config
     );
 
@@ -38,7 +95,7 @@ export const fetchDepartures = createAsyncThunk(
     const {
       data: { flights },
     } = await axios.get(
-      "http://localhost:5000/public-flights/flights?flightDirection=D&includedelays=false&page=0&sort=%2BscheduleTime",
+      `http://localhost:5000/public-flights/flights?flightDirection=D&includedelays=false&page=0&sort=%2BscheduleTime&fromDateTime=${threeHoursLater}&toDateTime=${fourHoursLater}&searchDateTimeField=scheduleDateTime`,
       config
     );
     return flights;
@@ -51,19 +108,6 @@ export const fetchDetailPageInfo = createAsyncThunk(
   async (id) => {
     const { data } = await axios.get(
       `http://localhost:5000/public-flights/flights/${id}`,
-      config
-    );
-    return data;
-  }
-);
-
-//Fetch earlier arrival flights and concat with current state
-export const fetchEarlierArrivalFlights = createAsyncThunk(
-  "flights/earlierFlights",
-  async (from, to) => {
-    const { data } = await axios.get(
-      `https://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=0&sort=%2BscheduleTime&fromDateTime=${from}&toDateTime=${to}&searchDateTimeField=scheduleDateTime
-`,
       config
     );
     return data;
@@ -105,6 +149,33 @@ export const fetchByIATACode = createAsyncThunk(
   }
 );
 
+//fetch aircraft type
+export const fetchAircraftType = createAsyncThunk(
+  "flights/aircraftType",
+  async ({ iataMain, iataSub }) => {
+    const {
+      data: { aircraftTypes },
+    } = await axios.get(
+      `http://localhost:5000/public-flights/aircrafttypes?iataMain=${iataMain}&iataSub=${iataSub}&page=0&sort=%2BiataMain
+      `,
+      config
+    );
+    return aircraftTypes;
+  }
+);
+
+//fetch airline name
+export const fetchAirlineName = createAsyncThunk(
+  "flights/airlineName",
+  async (IATA) => {
+    const { data } = await axios.get(
+      `http://localhost5000/public-flights/airlines/${IATA}`,
+      config
+    );
+    return data;
+  }
+);
+
 const FlightSlice = createSlice({
   name: "Flights",
   initialState,
@@ -124,6 +195,18 @@ const FlightSlice = createSlice({
     });
     builder.addCase(fetchByIATACode.fulfilled, (state, action) => {
       state.flights = action.payload;
+    });
+    builder.addCase(fetchLaterArrivals.fulfilled, (state, action) => {
+      state.laterFlights.push(action.payload);
+    });
+    builder.addCase(fetchEarlierArrivals.fulfilled, (state, action) => {
+      state.earlierFlights.unshift(action.payload);
+    });
+    builder.addCase(fetchAircraftType.fulfilled, (state, action) => {
+      state.aircraftType = action.payload;
+    });
+    builder.addCase(fetchAirlineName.fulfilled, (state, action) => {
+      state.airlineName = action.payload;
     });
   },
 });
