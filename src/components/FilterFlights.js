@@ -92,6 +92,7 @@ function FilterFlights({ pageType }) {
         <div className="flex space-x-4">
           <select
             name="day"
+            defaultValue={`${getNewDateForValue(0, "today")}`}
             id=""
             onChange={(e) => fetchFlightsByDate(e)}
             className="bg-white border border-gray-300 py-2 px-4 outline-none"
@@ -99,9 +100,7 @@ function FilterFlights({ pageType }) {
             <option value={`${getNewDateForValue(1, "decrease")}`}>
               Yesterday
             </option>
-            <option selected value={`${getNewDateForValue(0, "today")}`}>
-              Today
-            </option>
+            <option value={`${getNewDateForValue(0, "today")}`}>Today</option>
             <option value={`${getNewDateForValue(1, "increase")}`}>
               Tomorrow
             </option>

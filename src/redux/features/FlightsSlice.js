@@ -3,10 +3,7 @@ import axios from "axios";
 
 const initialState = {
   flights: [],
-  flightsLoaded: false,
   flight: null,
-  earlierFlights: [],
-  laterFlights: [],
   aircraftType: [],
   airlineName: null,
 };
@@ -32,15 +29,15 @@ const now = new Date();
 const makeTwoHoursLater = addHours(now, 2);
 const twoHoursLater = makeTwoHoursLater.toISOString().slice(0, 19);
 
-const makeThreeHoursLater = addHours(now, 3);
+const makeThreeHoursLater = addHours(now, 1);
 const threeHoursLater = makeThreeHoursLater.toISOString().slice(0, 19);
 
-const makeFourHoursLater = addHours(now, 4);
+const makeFourHoursLater = addHours(now, 1);
 const fourHoursLater = makeFourHoursLater.toISOString().slice(0, 19);
 
 const makeFiveHoursLater = addHours(now, 5);
 const fiveHoursLater = makeFiveHoursLater.toISOString().slice(0, 19);
-
+console.log(threeHoursLater, fourHoursLater);
 // Fetch Arrival Flights
 export const fetchArrivals = createAsyncThunk(
   "flights/todayArrival",
@@ -60,11 +57,11 @@ export const fetchArrivals = createAsyncThunk(
 
 export const fetchLaterArrivals = createAsyncThunk(
   "flights/laterArrival",
-  async (pageNumber) => {
+  async ({ pageNumber, from, to }) => {
     const {
       data: { flights },
     } = await axios.get(
-      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${fourHoursLater}&toDateTime=${fiveHoursLater}&searchDateTimeField=scheduleDateTime`,
+      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${from}&toDateTime=${to}&searchDateTimeField=scheduleDateTime`,
       config
     );
 
@@ -76,11 +73,12 @@ export const fetchLaterArrivals = createAsyncThunk(
 
 export const fetchEarlierArrivals = createAsyncThunk(
   "flights/earlierArrival",
-  async (pageNumber) => {
+  async ({ pageNumber, from, to }) => {
+    console.log(pageNumber, from, to);
     const {
       data: { flights },
     } = await axios.get(
-      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${twoHoursLater}&toDateTime=${threeHoursLater}&searchDateTimeField=scheduleDateTime`,
+      `http://localhost:5000/public-flights/flights?flightDirection=A&includedelays=false&page=${pageNumber}&sort=%2BscheduleTime&fromDateTime=${from}&toDateTime=${to}&searchDateTimeField=scheduleDateTime`,
       config
     );
 
@@ -185,7 +183,6 @@ const FlightSlice = createSlice({
     });
     builder.addCase(fetchDepartures.fulfilled, (state, action) => {
       state.flights = action.payload;
-      state.flightsLoaded = true;
     });
     builder.addCase(fetchDetailPageInfo.fulfilled, (state, action) => {
       state.flight = action.payload;
@@ -197,10 +194,10 @@ const FlightSlice = createSlice({
       state.flights = action.payload;
     });
     builder.addCase(fetchLaterArrivals.fulfilled, (state, action) => {
-      state.laterFlights.push(action.payload);
+      state.flights = [...state.flights, ...action.payload];
     });
     builder.addCase(fetchEarlierArrivals.fulfilled, (state, action) => {
-      state.earlierFlights.unshift(action.payload);
+      state.flights = [...action.payload, ...state.flights];
     });
     builder.addCase(fetchAircraftType.fulfilled, (state, action) => {
       state.aircraftType = action.payload;

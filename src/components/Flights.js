@@ -32,46 +32,91 @@ function Flights({ flights }) {
   // } else {
   //   day = fligthDate.toString().slice(0, 3);
   // }
+  //Fetching data from that date time
 
+  //for earlier
+  const firstFlightOfFlightsArray = flights?.[0]?.scheduleDateTime;
+  const willBeChangedTime = firstFlightOfFlightsArray?.slice(0, 19);
+  let focusDateTime;
+  if (willBeChangedTime) {
+    focusDateTime = new Date(willBeChangedTime);
+  }
+
+  const makeOneHourBefore = addHours(focusDateTime, 2);
+  const to = willBeChangedTime;
+  const from = makeOneHourBefore?.toISOString()?.slice(0, 19);
+  console.log("from:" + from, "to:" + to);
+  ////
+  //for later
+  const lastFlightOfFlightsArray = flights?.slice(-1);
+  const lastItemScheduleDateTime =
+    lastFlightOfFlightsArray?.[0]?.scheduleDateTime;
+  const focusTimeAsString = lastItemScheduleDateTime?.slice(0, 19);
+  let laterFocusDateTime;
+  if (focusTimeAsString) {
+    laterFocusDateTime = new Date(focusTimeAsString);
+  }
+  const makeOneHourLater = addHours(laterFocusDateTime, 4);
+
+  const toOfLater = makeOneHourLater?.toISOString()?.slice(0, 19);
   const dispatch = useDispatch();
 
-  const laterFlightsArrays = useSelector((state) => state.flights.laterFlights);
+  function addHours(date, hours) {
+    date?.setHours(date.getHours() + hours);
+
+    return date;
+  }
+
+  function minusHours(date, hours) {
+    date?.setHours(date.getHours() - hours);
+
+    return date;
+  }
   const [pageNumberForArrivalLater, setPageNumberForArrivalLater] = useState(0);
   const [pageNumberForArrivalEarlier, setPageNumberForArrivalEarlier] =
-    useState(10);
+    useState(5);
 
   function laterFlightsHandler() {
-    dispatch(fetchLaterArrivals(pageNumberForArrivalLater));
+    dispatch(
+      fetchLaterArrivals({
+        pageNumber: pageNumberForArrivalLater,
+        from: focusTimeAsString,
+        to: toOfLater,
+      })
+    );
     setPageNumberForArrivalLater(pageNumberForArrivalLater + 1);
   }
 
-  const earlierFlightsArray = useSelector(
-    (state) => state.flights.earlierFlights
-  );
-
-  function earlierFlightsHandler() {
-    dispatch(fetchEarlierArrivals(pageNumberForArrivalEarlier));
-    setPageNumberForArrivalEarlier(pageNumberForArrivalEarlier - 1);
+  function earlierFlightsHandler(from, to) {
+    console.log(from, to);
+    dispatch(
+      fetchEarlierArrivals({
+        pageNumber: pageNumberForArrivalEarlier,
+        from: from,
+        to: to,
+      })
+    );
+    if (pageNumberForArrivalEarlier >= 0) {
+      setPageNumberForArrivalEarlier(pageNumberForArrivalEarlier - 1);
+    }
   }
+
+  const random = Math.floor(Math.random() * 100);
 
   return (
     <div className="min-h-screen bg-slate-300 flex flex-col items-center">
       <div className="pt-10">
         <ShowFlightsButton
-          onClickHandler={earlierFlightsHandler}
+          onClickHandler={() => earlierFlightsHandler(from, to)}
           type="earlier"
         />
-        {earlierFlightsArray && (
-          <AllEarlierFlights earlierFlightsArray={earlierFlightsArray} />
-        )}
+
         <div className="flex flex-col space-y-2 my-2">
-          {flights?.map((flight) => (
-            <FlightDetails flight={flight} key={flight.id} />
+          {flights?.map((flight, index) => (
+            <FlightDetails flight={flight} key={index} />
           ))}
         </div>
-        {laterFlightsArrays && (
-          <AllLaterFlights laterFlightsArrays={laterFlightsArrays} />
-        )}
+
         <ShowFlightsButton onClickHandler={laterFlightsHandler} type="later" />
       </div>
     </div>
